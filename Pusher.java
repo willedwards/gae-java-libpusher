@@ -66,7 +66,7 @@ public class Pusher {
     	}
     	return hash;
 	}
-	
+		
 	/**
 	 * Returns a md5 representation of the given string
 	 * @param data
@@ -97,14 +97,16 @@ public class Pusher {
             // Create the HMAC/SHA256 key from application secret
             final SecretKeySpec signingKey = new SecretKeySpec( pusherApplicationSecret.getBytes(), "HmacSHA256");
 
-            // Create the message authentication code (MAC)
+            // Create the message authentication code (MAC) 
             final Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(signingKey);
             
             //Process and return data
             byte[] digest = mac.doFinal(data.getBytes("UTF-8"));
             digest = mac.doFinal(data.getBytes());
-            return byteArrayToString(digest);            
+            //Convert to string
+            BigInteger bigInteger = new BigInteger(1,digest);
+    		return String.format("%0" + (digest.length << 1) + "x", bigInteger);
         } catch (NoSuchAlgorithmException nsae) {
             //We should never come here, because GAE has HMac SHA256
         	throw new RuntimeException("No HMac SHA256 algorithm");
