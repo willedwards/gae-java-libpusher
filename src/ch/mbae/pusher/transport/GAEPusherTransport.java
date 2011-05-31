@@ -21,7 +21,9 @@ public class GAEPusherTransport implements PusherTransport {
 
         //Start request
         try {
-                return urlFetchService.fetch(request);
+                // TODO map GAE to PusherRequest
+            throw new IllegalStateException("not implemented yet. See TODO in source code");
+                //return urlFetchService.fetch(request);
         } catch (IOException e) {
                 //Log warning
                 e.printStackTrace();
