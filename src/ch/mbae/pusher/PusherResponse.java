@@ -1,3 +1,7 @@
+/**
+ * Author: marcbaechinger
+ * Copyright 2011. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ */
 package ch.mbae.pusher;
 
 import java.net.URL;

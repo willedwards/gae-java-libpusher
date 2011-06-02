@@ -175,7 +175,7 @@ public class PusherUtil {
      * @return
      */
     public static URL buildURI(String uriPath, String query, String signature){
-    	StringBuffer buffer = new StringBuffer();
+    	StringBuilder buffer = new StringBuilder();
     	//Protocol
     	buffer.append("http://");
     	//Host

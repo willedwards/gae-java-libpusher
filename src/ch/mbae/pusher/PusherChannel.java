@@ -1,3 +1,7 @@
+/**
+ * Author: marcbaechinger
+ * Copyright 2011. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ */
 package ch.mbae.pusher;
 
 import ch.mbae.pusher.util.PusherUtil;
@@ -32,7 +36,7 @@ public class PusherChannel {
      * @param jsonData
      * @return
      */
-    public PusherResponse pushEvent(String event, String jsonData){
+    public PusherResponse pushEvent(String event, String jsonData) throws PusherTransportException{
     	return pushEvent(event, jsonData, "");
     }
     
@@ -44,7 +48,7 @@ public class PusherChannel {
      * @param socketId
      * @return
      */
-    public PusherResponse pushEvent(String event, String jsonData, String socketId){
+    public PusherResponse pushEvent(String event, String jsonData, String socketId) throws PusherTransportException{
     	//Build URI path
     	String uriPath = PusherUtil.buildURIPath(this.channelName, this.pusherApplicationId);
     	//Build query
