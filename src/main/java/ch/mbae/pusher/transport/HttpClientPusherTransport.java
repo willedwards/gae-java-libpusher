@@ -17,8 +17,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 
@@ -35,7 +37,9 @@ public class HttpClientPusherTransport implements PusherTransport {
      * for all requests
      */
     public HttpClientPusherTransport() {
-        this.httpClient =  new DefaultHttpClient();
+        ClientConnectionManager cm = new ThreadSafeClientConnManager();
+
+        this.httpClient =  new DefaultHttpClient(cm);
         this.httpClient.getParams().setParameter(
                 CoreProtocolPNames.PROTOCOL_VERSION, 
                 HttpVersion.HTTP_1_1); // set default to HTTP 1.1
