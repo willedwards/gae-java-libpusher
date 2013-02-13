@@ -31,7 +31,6 @@ public class PusherChannel {
     
     /**
      * Delivers a message to the Pusher API without providing a socket_id
-     * @param channel
      * @param event
      * @param jsonData
      * @return
@@ -42,7 +41,6 @@ public class PusherChannel {
     
     /**
      * Delivers a message to the Pusher API
-     * @param channel
      * @param event
      * @param jsonData
      * @param socketId
