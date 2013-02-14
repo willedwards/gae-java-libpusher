@@ -15,17 +15,9 @@ public class PusherChannel {
     
     private PusherTransport transport;
     private String channelName;
-    private String pusherApplicationId;
-    private String pusherApplicationSecret;
-    private String pusherApplicationKey;
-    
-    public PusherChannel(String channelName, String pusherApplicationId, String pusherApplicationKey, 
-            String pusherApplicationSecret, PusherTransport transport) {
-        
+
+    public PusherChannel(String channelName,  PusherTransport transport) {
         this.channelName = channelName;
-        this.pusherApplicationKey = pusherApplicationKey;
-        this.pusherApplicationId = pusherApplicationId;
-        this.pusherApplicationSecret = pusherApplicationSecret;
         this.transport = transport;
     }
     
@@ -48,11 +40,11 @@ public class PusherChannel {
      */
     public PusherResponse pushEvent(String event, String jsonData, String socketId) throws PusherTransportException{
     	//Build URI path
-    	String uriPath = PusherUtil.buildURIPath(this.channelName, this.pusherApplicationId);
+    	String uriPath = PusherUtil.buildURIPath(this.channelName, PusherCredentials.APPLICATION_ID);
     	//Build query
-    	String query = PusherUtil.buildQuery(event, jsonData, socketId, this.pusherApplicationKey);
+    	String query = PusherUtil.buildQuery(event, jsonData, socketId, PusherCredentials.APPLICATION_KEY);
     	//Generate signature
-    	String signature = PusherUtil.buildAuthenticationSignature(uriPath, query, this.pusherApplicationSecret);
+    	String signature = PusherUtil.buildAuthenticationSignature(uriPath, query, PusherCredentials.APPLICATION_SECRET);
     	//Build URI
     	URL url = PusherUtil.buildURI(uriPath, query, signature);
         

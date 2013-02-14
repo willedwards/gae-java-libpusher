@@ -4,14 +4,15 @@
  */
 package ch.mbae.pusher;
 
-import ch.mbae.pusher.transport.HttpClientPusherTransport;
-import java.net.URL;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.easymock.Capture;
-import static org.easymock.EasyMock.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.URL;
+
+import static org.easymock.EasyMock.*;
 
 /**
  *
@@ -31,7 +32,7 @@ public class PusherChannelTest implements PusherCredentials {
         // create a mock for the transport
         this.transportMock = createMock(PusherTransport.class);
         // create the channel
-        this.testee = new PusherChannel(CHANNEL, APPLICATION_ID, APPLICATION_KEY, APPLICATION_SECRET, transportMock);
+        this.testee = new PusherChannel(CHANNEL, transportMock);
     }
     
     

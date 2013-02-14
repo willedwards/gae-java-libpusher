@@ -33,11 +33,7 @@ public class HttpClientPusherTransportTest implements PusherCredentials {
         // create the transport under test
         this.tranportUnderTest = new HttpClientPusherTransport();
         // the channel to inject the transport into
-        this.channel = new PusherChannel(CHANNEL,
-                                         APPLICATION_ID,
-                                         APPLICATION_KEY,
-                                         APPLICATION_SECRET,
-                                         this.tranportUnderTest);
+        this.channel = new PusherChannel(CHANNEL,this.tranportUnderTest);
     }
 
     @After

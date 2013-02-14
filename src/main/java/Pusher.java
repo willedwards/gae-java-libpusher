@@ -1,5 +1,9 @@
+import ch.mbae.pusher.PusherCredentials;
+import com.google.appengine.api.urlfetch.*;
+import org.apache.log4j.Logger;
 
-
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -8,18 +12,6 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.mortbay.log.Log;
-
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPMethod;
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.HTTPResponse;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
 /**
  * Static class to send messages to Pusher's REST API.
@@ -32,25 +24,11 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
  */
 public class Pusher {
 
+    private static final Logger log = Logger.getLogger(Pusher.class);
 	/**
 	 *  Pusher Host name
 	 */
 	private final static String pusherHost = "api.pusherapp.com";
-	
-	/**
-	 * Pusher Application Identifier
-	 */
-	private final static String pusherApplicationId = "";
-	
-	/**
-	 * Pusher Application Key
-	 */
-	private final static String pusherApplicationKey = "";
-	
-	/**
-	 * Pusher Secret
-	 */
-	private final static String pusherApplicationSecret = "";
 	
 	/**
 	 * Converts a byte array to a string representation
@@ -92,10 +70,10 @@ public class Pusher {
 	 * @param data
 	 * @return
 	 */
-    private static String hmacsha256Representation(String data) {
+    public static String hmacsha256Representation(String data) {
         try {
             // Create the HMAC/SHA256 key from application secret
-            final SecretKeySpec signingKey = new SecretKeySpec( pusherApplicationSecret.getBytes(), "HmacSHA256");
+            final SecretKeySpec signingKey = new SecretKeySpec( PusherCredentials.APPLICATION_SECRET.getBytes(), "HmacSHA256");
 
             // Create the message authentication code (MAC)
             final Mac mac = Mac.getInstance("HmacSHA256");
@@ -128,7 +106,7 @@ public class Pusher {
     	StringBuffer buffer = new StringBuffer();
     	//Auth_Key
     	buffer.append("auth_key=");
-    	buffer.append(pusherApplicationKey);
+    	buffer.append(PusherCredentials.APPLICATION_KEY);
     	//Timestamp
     	buffer.append("&auth_timestamp=");
     	buffer.append(System.currentTimeMillis() / 1000);
@@ -157,7 +135,7 @@ public class Pusher {
     	StringBuffer buffer = new StringBuffer();
     	//Application ID
     	buffer.append("/apps/");
-    	buffer.append(pusherApplicationId);
+    	buffer.append(PusherCredentials.APPLICATION_ID);
     	//Channel name
     	buffer.append("/channels/");
     	buffer.append(channelName);
@@ -256,7 +234,7 @@ public class Pusher {
 			return urlFetchService.fetch(request);
 		} catch (IOException e) {
 			//Log warning
-			Log.warn("Pusher request could not be send to the following URI " + url.toString());
+			log.warn("Pusher request could not be send to the following URI " + url.toString());
 			return null;
 		}    	
     }
