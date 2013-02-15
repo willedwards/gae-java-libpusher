@@ -4,6 +4,8 @@
  */
 package ch.mbae.pusher;
 
+import ch.mbae.pusher.impl.CredentialHolder;
+import ch.mbae.pusher.impl.PusherChannel;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.easymock.Capture;
@@ -18,7 +20,7 @@ import static org.easymock.EasyMock.*;
  *
  * @author marcbaechinger
  */
-public class PusherChannelTest implements PusherCredentials {
+public class PusherChannelTest {
     
     private static final Logger LOGGER = Logger.getLogger(PusherChannelTest.class); 
     
@@ -26,9 +28,15 @@ public class PusherChannelTest implements PusherCredentials {
     
     private PusherChannel testee;
     private PusherTransport transportMock;
-            
+
+    String CHANNEL = "junit-test-channel";
+    String EVENT = "junit-test-event";
+
     @Before
     public void setUp() {
+
+        CredentialHolder.build(TestCredentials.APPLICATION_ID, TestCredentials.APPLICATION_KEY, TestCredentials.APPLICATION_SECRET);
+
         // create a mock for the transport
         this.transportMock = createMock(PusherTransport.class);
         // create the channel
@@ -37,7 +45,7 @@ public class PusherChannelTest implements PusherCredentials {
     
     
     /**
-     * Test o f pushEvent method, of class PusherChannel.
+     * Test of pushEvent method, of class PusherChannel.
      */
     @Test
     public void testPushEvent_String_String() throws PusherTransportException {

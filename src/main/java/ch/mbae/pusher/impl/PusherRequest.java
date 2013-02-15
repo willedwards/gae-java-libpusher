@@ -1,4 +1,4 @@
-
+package ch.mbae.pusher.impl;
 
 import com.google.appengine.api.urlfetch.HTTPResponse;
 
@@ -46,7 +46,7 @@ public class PusherRequest {
 	 * @return
 	 */
 	public HTTPResponse triggerPush(String jsonData){
-		return Pusher.triggerPush(channelName, eventName, jsonData);
+		return PusherHelper.triggerPush(channelName, eventName, jsonData);
 	}	
 
 	/**
@@ -56,7 +56,7 @@ public class PusherRequest {
 	 * @return
 	 */
 	public HTTPResponse triggerPush(String jsonData, String eventName){	
-		return Pusher.triggerPush(channelName, eventName, jsonData);
+		return PusherHelper.triggerPush(channelName, eventName, jsonData);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class PusherRequest {
 	 * @return
 	 */
 	public HTTPResponse triggerPush(String jsonData, String eventName, String socketId){	
-		return Pusher.triggerPush(channelName, eventName, jsonData, socketId);
+		return PusherHelper.triggerPush(channelName, eventName, jsonData, socketId);
 	}
 
 	public void setEventName(String eventName) {

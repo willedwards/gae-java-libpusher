@@ -1,5 +1,7 @@
 package ch.mbae.pusher;
 
+import java.util.Collection;
+
 /**
  * Author: wge
  * Date: 09/02/2013
@@ -28,5 +30,16 @@ public interface PushApi
      */
     PusherResponse pushEvent( String channelName, String eventName, String jsonData, String socketId) throws PusherTransportException;
 
+    /**
+     * Should be called when we have finished using a channel.
+     * For example, a disconnection has occurred.
+     * @param channelName
+     */
+    void disposeOfChannel(String channelName);
 
+    /**
+     * Show all the channels currently being used
+     * @return
+     */
+    Collection<String> listLiveChannels();
 }

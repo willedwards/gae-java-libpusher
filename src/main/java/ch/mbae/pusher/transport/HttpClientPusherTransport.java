@@ -4,25 +4,25 @@
  */
 package ch.mbae.pusher.transport;
 
-import ch.mbae.pusher.PusherTransport;
 import ch.mbae.pusher.PusherResponse;
+import ch.mbae.pusher.PusherTransport;
 import ch.mbae.pusher.PusherTransportException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of PusherTransport using Jakarta HttpClient
@@ -30,22 +30,15 @@ import org.apache.http.util.EntityUtils;
  */
 public class HttpClientPusherTransport implements PusherTransport {
     
-    DefaultHttpClient httpClient;
+    DefaultHttpClient httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager());
         
     /**
-     * create a  http transportn using a single http client
+     * create a  http transport using a single http client
      * for all requests
      */
     public HttpClientPusherTransport() {
-        ClientConnectionManager cm = new ThreadSafeClientConnManager();
-
-        this.httpClient =  new DefaultHttpClient(cm);
-        this.httpClient.getParams().setParameter(
-                CoreProtocolPNames.PROTOCOL_VERSION, 
-                HttpVersion.HTTP_1_1); // set default to HTTP 1.1
-        this.httpClient.getParams().setParameter(
-                CoreProtocolPNames.HTTP_CONTENT_CHARSET, 
-                "UTF-8");
+        this.httpClient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1); // set default to HTTP 1.1
+        this.httpClient.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET,"UTF-8");
     }
     
     @Override

@@ -5,33 +5,24 @@ This Java classes can be used to communicate very easily with the Pusher REST AP
 
 Get Started
 -----------
-Simply replace the Pusher specific constants in Pusher.java:
+Use the PushApi as seen in ch.mbae.pusher.PushApi.
 
-	private final static String pusherApplicationId = "";
-	
-	private final static String pusherApplicationKey = "";
-	
-	private final static String pusherApplicationSecret = "";
-	
-Call one of the two available static methods called "triggerPush" and pass channel name, event name and the message body (JSON encoded data) as parameters:
-	
-	Pusher.triggerPush("test_channel", "my_event", jsonData);
-	
-The second "triggerPush" method provides an additional parameter for the socket_id:
+ 
+	PushApi api = new PushImpl();
 
-	Pusher.triggerPush("test_channel", "my_event", jsonData, socketId);
+	api.setGAECredentials(pusherApplicationId, pusherApplicationKey, pusherApplicationSecret);
+
+	then call the following, where all arguments are strings.
+
+	PusherResponse resp = api.pushEvent(  channelName,  eventName,  jsonData,  socketId) ;
+
+	The implementation caches your channels, therefore when you have finished, eg a disconnect happens, then
+
+	api.disposeOfChannel(channelName);
+
 	
 That's it.
 
-Default values
---------------
-Sometimes it can be very convenient to prepulate a PusherRequest instance with default channel and/or event name:
-
-	PusherRequest p = new PusherRequest("test_channel","my_event");
-	
-To send a request to the Pusher API just call "triggerPush" on this instance:
-
-	p.triggerPush(jsondata);
 	
 License
 -------

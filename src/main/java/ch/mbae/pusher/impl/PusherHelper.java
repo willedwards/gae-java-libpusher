@@ -1,4 +1,5 @@
-import ch.mbae.pusher.PusherCredentials;
+package ch.mbae.pusher.impl;
+
 import com.google.appengine.api.urlfetch.*;
 import org.apache.log4j.Logger;
 
@@ -22,9 +23,10 @@ import java.security.NoSuchAlgorithmException;
  * @author Stephan Scheuermann
  * Copyright 2010. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
-public class Pusher {
+class PusherHelper
+{
 
-    private static final Logger log = Logger.getLogger(Pusher.class);
+    private static final Logger log = Logger.getLogger(PusherHelper.class);
 	/**
 	 *  Pusher Host name
 	 */
@@ -73,7 +75,7 @@ public class Pusher {
     public static String hmacsha256Representation(String data) {
         try {
             // Create the HMAC/SHA256 key from application secret
-            final SecretKeySpec signingKey = new SecretKeySpec( PusherCredentials.APPLICATION_SECRET.getBytes(), "HmacSHA256");
+            final SecretKeySpec signingKey = new SecretKeySpec( CredentialHolder.getAPPLICATION_SECRET().getBytes(), "HmacSHA256");
 
             // Create the message authentication code (MAC)
             final Mac mac = Mac.getInstance("HmacSHA256");
@@ -106,7 +108,7 @@ public class Pusher {
     	StringBuffer buffer = new StringBuffer();
     	//Auth_Key
     	buffer.append("auth_key=");
-    	buffer.append(PusherCredentials.APPLICATION_KEY);
+    	buffer.append(CredentialHolder.getAPPLICATION_KEY());
     	//Timestamp
     	buffer.append("&auth_timestamp=");
     	buffer.append(System.currentTimeMillis() / 1000);
@@ -135,7 +137,7 @@ public class Pusher {
     	StringBuffer buffer = new StringBuffer();
     	//Application ID
     	buffer.append("/apps/");
-    	buffer.append(PusherCredentials.APPLICATION_ID);
+    	buffer.append(CredentialHolder.getAPPLICATION_ID());
     	//Channel name
     	buffer.append("/channels/");
     	buffer.append(channelName);

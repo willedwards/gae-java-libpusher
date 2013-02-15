@@ -4,9 +4,10 @@
  */
 package ch.mbae.pusher.transport;
 
-import ch.mbae.pusher.PusherChannel;
-import ch.mbae.pusher.PusherCredentials;
 import ch.mbae.pusher.PusherResponse;
+import ch.mbae.pusher.TestCredentials;
+import ch.mbae.pusher.impl.CredentialHolder;
+import ch.mbae.pusher.impl.PusherChannel;
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -18,7 +19,7 @@ import org.junit.Test;
  * 
  * @author marcbaechinger
  */
-public class HttpClientPusherTransportTest implements PusherCredentials {
+public class HttpClientPusherTransportTest {
     
     private static final Logger LOGGER = Logger.getLogger(HttpClientPusherTransportTest.class);
     
@@ -27,9 +28,13 @@ public class HttpClientPusherTransportTest implements PusherCredentials {
     private HttpClientPusherTransport tranportUnderTest;
     private PusherChannel channel;
     
-    
+    String CHANNEL = "junit-test-channel";
+    String EVENT = "junit-test-event";
+
     @Before
     public void setUp() {
+
+        CredentialHolder.build(TestCredentials.APPLICATION_ID, TestCredentials.APPLICATION_KEY, TestCredentials.APPLICATION_SECRET);
         // create the transport under test
         this.tranportUnderTest = new HttpClientPusherTransport();
         // the channel to inject the transport into
@@ -55,7 +60,7 @@ public class HttpClientPusherTransportTest implements PusherCredentials {
      * Test of fetch method, of class HttpClientPusherTransport.
      */
     @Test
-    public void testFetchWidthSessionId() throws Exception {
+    public void testFetchWidthSocketId() throws Exception {
         // push the event 
         PusherResponse response = this.channel.pushEvent(EVENT, JSON_STRING, SOCKET_ID);
         
@@ -71,7 +76,8 @@ public class HttpClientPusherTransportTest implements PusherCredentials {
        }
 
    }
-   private boolean verifyContent(PusherResponse response)
+
+   public static boolean verifyContent(PusherResponse response)
    {
        LOGGER.debug(response.getResponseCode());
        LOGGER.debug(new String(response.getContent()));
